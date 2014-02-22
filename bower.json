@@ -1,0 +1,21 @@
+{
+	"name": "say.js",
+	"main": "say.js",
+	"version": "0.1.0",
+	"authors": [
+		"Alexandre D'Eschambeault <adeschambeault@exolnet.com>"
+	],
+	"description": "Say commands and interprets it.",
+	"keywords": [
+		"say",
+		"commands",
+		"speech"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test"
+	]
+}
