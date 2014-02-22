@@ -1,10 +1,13 @@
 var assert = require("assert");
+var lib = require('../src/say');
 
-describe('Array', function(){
-	describe('#indexOf()', function(){
-		it('should return -1 when the value is not present', function(){
-			assert.equal(-1, [1,2,3].indexOf(5));
-			assert.equal(-1, [1,2,3].indexOf(0));
+describe('SayJS', function(){
+	describe('add()', function(){
+		it('should add a new phrase', function(){
+			var say = new SayJS();
+			say.add('hello', function() {});
+
+			assert.equal(1, say.count());
 		});
 	});
 });

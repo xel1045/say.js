@@ -46,6 +46,12 @@ module.exports = function(grunt) {
 					'src/**/*.js'
 				]
 			},
+			unit: {
+				tasks: ['test:unit'],
+				files: [
+					'test/**/*.js'
+				]
+			},
 		},
 	});
 
