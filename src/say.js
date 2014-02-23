@@ -30,15 +30,15 @@
 
 			// Add callbacks to speech recognition
 			recognition.onstart = function() {
-				// trigger callback onstart
+				// trigger event onstart
 			};
 
 			recognition.onend = function() {
-				// trigger callback onend
+				// trigger event onend
 			};
 
 			recognition.onresult = function(event) {
-				// trigger callback onresult
+				// trigger event onresult
 
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
 					if (event.results[i].isFinal) {
@@ -50,7 +50,7 @@
 			};
 
 			recognition.onerror = function(event) {
-				// trigger callback onerror
+				// trigger event onerror
 
 				// event.error
 				//     - network
