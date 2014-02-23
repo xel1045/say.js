@@ -58,5 +58,6 @@ module.exports = function(grunt) {
 	// Alias tasks
 	grunt.registerTask('test', ['jshint:all', 'test:unit']);
 	grunt.registerTask('test:unit', ['mochaTest']);
+	grunt.registerTask('package', ['uglify']);
 	grunt.registerTask('default', ['watch']);
 };
