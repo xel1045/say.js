@@ -1,4 +1,7 @@
-var assert = require("assert");
+var assert       = require('assert'),
+	should       = require('should'),
+	sinon        = require('sinon'),
+	EventEmitter = require('events').EventEmitter;
 
 require('./SpeechRecognition');
 require('../src/say');
@@ -98,7 +101,62 @@ describe('Say.js', function() {
 	});
 
 	describe('Methods to manage the SpeechRecognition state', function() {
+		describe('language()', function() {
+			it('should return the default language', function() {
+				var say = new SayJS();
 
+				assert.equal('en-US', say.language());
+			});
+
+			it('should get and set the language', function() {
+				var say = new SayJS();
+
+				say.language('fr-CA');
+				assert.equal('fr-CA', say.language());
+			});
+
+			it('should synchronize the language with the recognition object', function() {
+				var mock = new SpeechRecognition();
+				var say = new SayJS({
+					recognition: mock
+				});
+
+				assert.equal('en-US', mock.lang);
+
+				say.language('fr-CA');
+				assert.equal('fr-CA', mock.lang);
+			});
+		});
+
+		describe('start()', function() {
+			it('should start the recognition object', function() {
+				var mock = new SpeechRecognition();
+				sinon.spy(mock, 'start');
+
+				var say = new SayJS({
+					recognition: mock
+				});
+
+				say.start();
+
+				sinon.assert.calledOnce(mock.start);
+			});
+		});
+
+		describe('stop()', function() {
+			it('should stop the recognition object', function() {
+				var mock = new SpeechRecognition();
+				sinon.spy(mock, 'stop');
+
+				var say = new SayJS({
+					recognition: mock
+				});
+
+				say.stop();
+
+				sinon.assert.calledOnce(mock.stop);
+			});
+		});
 	});
 
 	describe('Events', function() {

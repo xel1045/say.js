@@ -17,10 +17,30 @@
 		var recognition;
 		var phrases = [];
 
-		this.init = function(options) {
-			var defaults = {};
+		var _analyseTranscript = function(transcript) {
+			for (var phrase in phrases) {
+				var parameters = null;
 
-			recognition = new SpeechRecognition();
+				if (typeof phrase === 'string') {
+					if (phrase === transcript) {
+						parameters = [];
+					}
+				} else if (phrase instanceof RegExp) {
+					parameters = phrase.match(transcript);
+				}
+
+				if (parameters) {
+					parameters.push(transcript, phrase);
+					var callback = phrases[phrase];
+					callback.apply(this, parameters);
+				}
+			}
+		};
+
+		this.init = function(options) {
+			options = options || {};
+
+			recognition = options.recognition || new SpeechRecognition();
 
 			// Configure the speech recognition
 			recognition.maxAlternatives = 5;
@@ -44,7 +64,11 @@
 					if (event.results[i].isFinal) {
 						var transcript = event.results[i][0].transcript;
 
+						// Clean the transcript
+						transcript = transcript.trim();
+
 						// trigger an action if a match is found.
+						_analyseTranscript(transcript);
 					}
 				}
 			};
@@ -53,9 +77,14 @@
 				// trigger event onerror
 
 				// event.error
-				//     - network
-				//     - not-allowed
-				//     - service-not-allowed
+				//    - no-speech
+				//    - aborted
+				//    - audio-capture
+				//    - network
+				//    - not-allowed
+				//    - service-not-allowed
+				//    - bad-grammar
+				//    - language-not-supported
 			};
 		};
 
@@ -74,7 +103,7 @@
 		};
 
 		this.stop = function() {
-			recognition.abort();
+			recognition.stop();
 			return this;
 		};
 
