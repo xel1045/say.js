@@ -1,5 +1,7 @@
 var assert = require("assert");
-var lib = require('../src/say');
+
+require('./SpeechRecognition');
+require('../src/say');
 
 describe('SayJS', function(){
 	describe('add()', function(){

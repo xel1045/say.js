@@ -1,16 +1,13 @@
-(function() {
+(function(global) {
 	'use strict';
 
-	var root = (typeof exports == 'undefined' ? window : exports);
-
 	// Get the speech recognition object with vendor definition
-	var SpeechRecognition = root.SpeechRecognition ||
-		root.webkitSpeechRecognition ||
-		root.mozSpeechRecognition ||
-		root.msSpeechRecognition ||
-		root.oSpeechRecognition;
-console.log('test');
-console.log(root);
+	var SpeechRecognition = global.SpeechRecognition ||
+		global.webkitSpeechRecognition ||
+		global.mozSpeechRecognition ||
+		global.msSpeechRecognition ||
+		global.oSpeechRecognition;
+
 	// Check browser support
 	if ( ! SpeechRecognition) {
 		return;
@@ -33,19 +30,32 @@ console.log(root);
 
 			// Add callbacks to speech recognition
 			recognition.onstart = function() {
-				
+				// trigger callback onstart
 			};
 
 			recognition.onend = function() {
-				
+				// trigger callback onend
 			};
 
 			recognition.onresult = function(event) {
+				// trigger callback onresult
 
+				for (var i = event.resultIndex; i < event.results.length; ++i) {
+					if (event.results[i].isFinal) {
+						var transcript = event.results[i][0].transcript;
+
+						// trigger an action if a match is found.
+					}
+				}
 			};
 
-			recognition.onerror = function() {
-				
+			recognition.onerror = function(event) {
+				// trigger callback onerror
+
+				// event.error
+				//     - network
+				//     - not-allowed
+				//     - service-not-allowed
 			};
 		};
 
@@ -69,7 +79,7 @@ console.log(root);
 		};
 
 		this.count = function() {
-			return phrases.length;
+			return Object.keys(phrases).length;
 		};
 
 		this.add = function(phrase, callback) {
@@ -103,10 +113,10 @@ console.log(root);
 	};
 
 	// Export
-	root.SayJS = SayJS;
+	global.SayJS = SayJS;
 
 	// Global helper
-	root.say = function(phrase, callback) {
+	global.say = function(phrase, callback) {
 		SayJS.instance().add(phrase, callback);
 	};
-})();
+})(typeof global === "object" ? global : this);
