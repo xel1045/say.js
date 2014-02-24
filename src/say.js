@@ -18,6 +18,8 @@
 		var phrases = [];
 
 		var _analyseTranscript = function(transcript) {
+			console.log(transcript);
+
 			for (var phrase in phrases) {
 				var parameters = null;
 
@@ -60,6 +62,8 @@
 			recognition.onresult = function(event) {
 				// trigger event onresult
 
+				console.log(event);
+
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
 					if (event.results[i].isFinal) {
 						var transcript = event.results[i][0].transcript;
@@ -98,6 +102,7 @@
 		};
 
 		this.start = function() {
+			console.log('start');
 			recognition.start();
 			return this;
 		};
