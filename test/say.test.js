@@ -159,6 +159,112 @@ describe('Say.js', function() {
 		});
 	});
 
+	describe('Matches', function() {
+		it('should matches a static phrase', function() {
+				var mock = new SpeechRecognition();
+				var callback = sinon.spy();
+
+				var say = new SayJS({
+					recognition: mock
+				});
+				say.add('hello', callback);
+
+				mock.onresult({
+					resultIndex: 0,
+					results: [
+						{
+							0: {
+								confidence: 0.96,
+								transcript: "hello"
+							},
+							isFinal: true,
+							length: 0
+						},
+					]
+				});
+
+				assert(callback.called);
+			});
+
+			it('should not matches all static phrase', function() {
+				var mock = new SpeechRecognition();
+				var callback = sinon.spy();
+
+				var say = new SayJS({
+					recognition: mock
+				});
+				say.add('hello', callback);
+
+				mock.onresult({
+					resultIndex: 0,
+					results: [
+						{
+							0: {
+								confidence: 0.96,
+								transcript: "bla bla bla"
+							},
+							isFinal: true,
+							length: 0
+						},
+					]
+				});
+
+				assert( ! callback.called);
+			});
+
+			it('should matches regex phrase', function() {
+				var mock = new SpeechRecognition();
+				var callback = sinon.spy();
+
+				var say = new SayJS({
+					recognition: mock
+				});
+				say.add(/my name is (.*)/, callback);
+
+				mock.onresult({
+					resultIndex: 0,
+					results: [
+						{
+							0: {
+								confidence: 0.96,
+								transcript: "my name is john"
+							},
+							isFinal: true,
+							length: 0
+						},
+					]
+				});
+
+				assert(callback.called);
+			});
+
+			it('should not matches all regex phrase', function() {
+				var mock = new SpeechRecognition();
+				var callback = sinon.spy();
+
+				var say = new SayJS({
+					recognition: mock
+				});
+				say.add(/my name is (.*)/, callback);
+
+				mock.onresult({
+					resultIndex: 0,
+					results: [
+						{
+							0: {
+								confidence: 0.96,
+								transcript: "bla bla bla"
+							},
+							isFinal: true,
+							length: 0
+						},
+					]
+				});
+
+				assert( ! callback.called);
+			});
+	});
+
 	describe('Events', function() {
 
 	});

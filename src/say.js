@@ -18,22 +18,22 @@
 		var phrases = [];
 
 		var _analyseTranscript = function(transcript) {
-			console.log(transcript);
-
-			for (var phrase in phrases) {
-				var parameters = null;
+			for (var i=0, l=phrases.length; i<l; i++) {
+				var object = phrases[i],
+					phrase = object.phrase,
+					parameters = null;
 
 				if (typeof phrase === 'string') {
 					if (phrase === transcript) {
 						parameters = [];
 					}
 				} else if (phrase instanceof RegExp) {
-					parameters = phrase.match(transcript);
+					parameters = transcript.match(phrase);
 				}
 
 				if (parameters) {
 					parameters.push(transcript, phrase);
-					var callback = phrases[phrase];
+					var callback = phrases[i].callback;
 					callback.apply(this, parameters);
 				}
 			}
@@ -62,8 +62,6 @@
 			recognition.onresult = function(event) {
 				// trigger event onresult
 
-				console.log(event);
-
 				for (var i = event.resultIndex; i < event.results.length; ++i) {
 					if (event.results[i].isFinal) {
 						var transcript = event.results[i][0].transcript;
@@ -78,6 +76,7 @@
 			};
 
 			recognition.onerror = function(event) {
+				console.log(event);
 				// trigger event onerror
 
 				// event.error
@@ -102,7 +101,6 @@
 		};
 
 		this.start = function() {
-			console.log('start');
 			recognition.start();
 			return this;
 		};
@@ -117,7 +115,12 @@
 		};
 
 		this.add = function(phrase, callback) {
-			phrases[phrase] = callback;
+			this.remove(phrase);
+
+			phrases.push({
+				'phrase': phrase,
+				'callback': callback
+			});
 			return this;
 		};
 
@@ -126,8 +129,20 @@
 			return this;
 		};
 
+		this.exists = function(phrase) {
+			for (var i=0, l=phrases.length; i<l; i++) {
+				if (String(phrases[i].phrase) === String(phrase)) {
+					return true;
+				}
+			}
+
+			return false;
+		};
+
 		this.remove = function(phrase) {
-			delete phrases[phrase];
+			phrases = phrases.filter(function(object) {
+				return String(object.phrase) !== String(phrase);
+			});
 			return this;
 		};
 
