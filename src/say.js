@@ -91,6 +91,10 @@
 			};
 		};
 
+		/**
+		 * Get or set the language used for speech recognition.
+		 * @param  string language Optionnal - Set the language
+		 */
 		this.language = function(language) {
 			if ( ! language) {
 				return recognition.lang;
@@ -100,20 +104,33 @@
 			return this;
 		};
 
+		/**
+		 * Start the speech recognition engine
+		 */
 		this.start = function() {
 			recognition.start();
 			return this;
 		};
 
+		/**
+		 * Stop the speech recognition.
+		 */
 		this.stop = function() {
 			recognition.stop();
 			return this;
 		};
 
+		/**
+		 * Return the number of phrases defined for detection.
+		 */
 		this.count = function() {
 			return Object.keys(phrases).length;
 		};
 
+		/**
+		 * Add a new phrase to be looked for by the speech recognition.
+		 * @param mixed   phrase   String or Regex of the phrase to look for
+		 */
 		this.add = function(phrase, callback) {
 			this.remove(phrase);
 
@@ -124,11 +141,18 @@
 			return this;
 		};
 
+		/**
+		 * Reset all phrases saved for recognition.
+		 */
 		this.reset = function() {
 			phrases = [];
 			return this;
 		};
 
+		/**
+		 * Return if a phrase is defined for the speech recognition.
+		 * @param mixed   phrase   String or Regex of the phrase to look for
+		 */
 		this.exists = function(phrase) {
 			for (var i=0, l=phrases.length; i<l; i++) {
 				if (String(phrases[i].phrase) === String(phrase)) {
@@ -139,6 +163,10 @@
 			return false;
 		};
 
+		/**
+		 * Remove a phrase for the speech recognition.
+		 * @param mixed   phrase   String or Regex of the phrase to look for
+		 */
 		this.remove = function(phrase) {
 			phrases = phrases.filter(function(object) {
 				return String(object.phrase) !== String(phrase);
